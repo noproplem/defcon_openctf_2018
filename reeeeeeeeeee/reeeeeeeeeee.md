@@ -357,11 +357,11 @@ What follows is a bunch of checks on each byte of the input, starting and index 
 [...]
 ```
 
-The rest of the checks look similar to those of index 0 and 6.
+The rest of the checks look similar to those of index 0 and 1.
 
 For byte 0 (and most others) it loads in our first byte into a 4-byte register. It then bit shifts the register back and forth to clear it, isolating the byte in question (assuming the high bit isn't set). Then checks that the register contains 'A' or fails. We've got the first char.
 
-Byte 1, when xor'ed with byte 0, should give 2. So we get `chr(ord('A')^2)=='C'`. We next compare that bytes 2 through 5 to the timestamp that was saved and printed earlier. So we'll have to parse that.
+Byte 1, when xor'ed with byte 0, should give 2. So we get `chr(ord('A')^2)=='C'`. It next compares bytes 2 through 5 to the timestamp that was saved and printed earlier. So we'll have to parse that.
 
 Bytes 6 onwards are just like byte 0 or 1. Simple checks. This is what we ended up with:
 
