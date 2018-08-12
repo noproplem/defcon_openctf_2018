@@ -1,0 +1,15 @@
+#!/bin/zsh
+set -e
+
+function Info()
+{
+    echo "[*] $*"
+}
+
+for x in clock-{000..100}; do
+    Info $x
+    ./term2png.py $x.dat $x.png
+    ./qrdecode.py $x.png | base64 -d | zcat > $x-small.txt
+    ./term2png.py $x-small.txt $x-small.png
+    ./qrdecode.py $x-small.png > $x-small.txt
+done
