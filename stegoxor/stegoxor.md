@@ -3,6 +3,8 @@
 The challenge begins by supplying you with a picture (not screenshot) of a multi-monitor desktop.
 The user has "computer management" open and several shortcuts to video games and misc. video game modding software, all of which proves to be red herrings when searching for clues.
 
+![Original challenge image](https://github.com/noproplem/defcon_openctf_2018/blob/master/stegoxor/images/original.jpg)
+
 The challenge previous to this one utilizes steghide, and after a bit of searching we decided to try the same technique on this challenge.
 
 With ```steghide info <file>``` you can reveal whether embedded data is present in the given file or not. However, if the embedded data is password protected, this will yield no results.
