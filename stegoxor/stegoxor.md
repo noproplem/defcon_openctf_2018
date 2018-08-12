@@ -13,7 +13,7 @@ First we tried to do a single byte xor of {0x00, 0xff} on the .xor file since th
 
 Success! The result of this was a JPEG image of a QR code.
 
-![First QR code](https://github.com/noproplem/defcon_openctf_2018/stegoxor/images/qr1.jpg)
+![First QR code](https://github.com/noproplem/defcon_openctf_2018/blob/master/stegoxor/images/qr1.jpg)
 
 We scanned the QR code with https://zxing.org/w/decode.jspx and got the result:
 ```
@@ -53,13 +53,13 @@ QeBnuT0g//j4D/IvQ/4HjDOGabepG/IAAAAASUVORK5CYII=
 
 This base64 encoded payload decodes to another image, this time a PNG of another, smaller QR code.
 
-![Second QR code](https://github.com/noproplem/defcon_openctf_2018/stegoxor/images/qr2.png)
+![Second QR code](https://github.com/noproplem/defcon_openctf_2018/blob/master/stegoxor/images/qr2.png)
 
 The smaller QR code was scanned in a similar manner and the payload was an ANSi encoded data blob.
 
 When rendering the ANSi blob in a terminal, another QR code appeared! This time in a much smaller format, which gave us a bit of trouble while trying to decode it.
 
-![Micro QR](https://github.com/noproplem/defcon_openctf_2018/stegoxor/images/microqr.png)
+![Micro QR](https://github.com/noproplem/defcon_openctf_2018/blob/master/stegoxor/images/microqr.png)
 
 Turns out that this QR code was not compatible with previously used QR decoders since the format was completely different.
 We looked up the different formats of QR codes and found that something called micro QR exists, and as you may guess, micro QR decoders exist as well!
