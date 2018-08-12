@@ -1,4 +1,4 @@
-#Solenya, web300
+# Solenya, web300
 
 Challenge text: "Whatever this thing is, it's shaming us. 172.31.2.105".
 
@@ -10,7 +10,7 @@ There isn't much going on besides the image, so we check for a /robots.txt file.
 
 By visting a random subdir from the robots.txt file we get a Django debug message - since the Django installation apparently is in debug mode. The message mentions the subdirs: /wubbalubbadubdub and /fingerprint. This seems interesting. Visiting http://172.31.2.105:8000/fingerprint we see an image of Birdman, and on http://172.31.2.105:8000/wubbalubbadubdub there is a login prompt. We try a few common sets of credentials: admin/password and so on, but no luck.
 
-The name of the challenge, "Solenya", and the "pickle Rick" references could very likely be a hint about Pickle (https://docs.python.org/3/library/pickle.html), which is used to serialize python objects. Since the webpage runs Django this seems likely. Exploiting picke to deserialize an object that gives code executin is a common trick (https://blog.nelhage.com/2011/03/exploiting-pickle/), so we basically just need to find out how to send some data that will be deserialzied by the website, then create and send our payload.
+The name of the challenge, "Solenya", and the "pickle Rick" references could very likely be a hint about Pickle (https://docs.python.org/3/library/pickle.html), which is used to serialize python objects. Since the webpage runs Django this seems likely. Exploiting pickle to deserialize an object that gives code executin is a common trick (https://blog.nelhage.com/2011/03/exploiting-pickle/), so we basically just need to find out how to send some data that will be deserialzied by the website, then create and send our payload.
 
 After playing around with the login prompt we see that after a login attempt a huge POST request is mad eto /fingerprint:
 
