@@ -168,4 +168,4 @@ $ md5sum favicon.ico
 7c6515ecfe20b1004f89d46849bad893  favicon.ico
 ```
 
-Submitting the md5sum we receive the flag.
+Submitting the md5sum as the flag we receive our points!
