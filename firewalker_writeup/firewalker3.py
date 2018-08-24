@@ -136,6 +136,7 @@ assert check9(sp), 'fails check9'
 syn_ack = sr1(p, iface=iface)
 syn_ack.show()
 
+# here you would have to start TLS handshake, but we just tested against an HTTP server
 t = TCP(
     dport = dst_port,
     sport = srcport,

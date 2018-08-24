@@ -1,6 +1,6 @@
 # Challenges
 
-This is a writeup of a series of challenges called firewalker{0-3} released as part of OpenCTF 2018 @ DEFCON26. We managed to solve fire_walker 0-2 during the competition, and we believe we found a solution for firewalker_3 a few days after the competition ended. The challenge points were 50, 200, 350 and 500, respectively.
+This is a writeup of a series of challenges called firewalker{0-3} released as part of OpenCTF 2018 @ DEFCON26. We managed to solve fire_walker 0-2 during the competition, and we believe we found a partial solution for firewalker_3 a few days after the competition ended. Specifically, firewalker_3 required our firewall-avoiding client to also talk SSL to the server, unlike the other challenges. This part we didn't implement, only the firewall part. The challenge points were 50, 200, 350 and 500, respectively.
 
 Each challenge consists of (ip, port) for a webserver, a HTTP GET endpoint exposing the flag, e.g. `/flag-4ae60838.txt`, and, crucially, a set of iptables rules that protect this HTTP endpoint. So the point of the challenges is to craft an HTTP GET request that passes these filter rules. 
 
@@ -291,7 +291,7 @@ The follow-up packets contain the HTTP GET request and did not require special c
 
 # firewalker_3
 
-We didn't complete this challenge during the CTF, but were able to finish our solution afterwards. We tested it against a setup that we believe mimics the actual game setup. Same as firewalker_2, the  firewalker_3 flag endpoint `http://172.31.2.97:27392/flag-192ce834.txt` was protected by a BPF-based filter:
+Like firewalker_2, firewalker_3 also was about a BPF firewall rule. Unlike firewalker_2, this endpoint also talked SSL at the application layer. We didn't complete this challenge during the CTF, but were able to finish the firewall part of the challenge afterwards. We tested it against a setup that we believe mimics the actual game setup, but without the SSL layer. In firewalker_3, the flag endpoint `https://172.31.2.97:27392/flag-192ce834.txt` was protected by this BPF-based filter:
 
 ```
 Chain PORT_27302 (1 references)
@@ -460,7 +460,7 @@ def check9(pkt):
     return A == PAYLEN
 ```
 
-Next step is mapping the constraints from packet byte offsets/values to IP and TCP packet fields (and values). Finally, we again used scapy to construct a packet that satisfies the constraints. The tricky checks are `check7` and `check9` which required that we hand-craft the TCP options to be included:
+Next step is mapping the constraints from packet byte offsets/values to IP and TCP packet fields (and values). Finally, we again used scapy to construct a SYN packet that satisfies the constraints. The tricky checks are `check7` and `check9` which required that we hand-craft the TCP options to be included:
 
 ```python
 i = IP(
@@ -506,6 +506,6 @@ pad = Raw('\x00'*align)
 p = i/t/options/pad
 ```
 
-From there the `RELATED,ESTABLISHED` iptables rule allows us to retrieve the flag. Full solution script is in [firewalker3.py](firewalker3.py). Similar to firewalker_2, we must add a rule to our own firewall to prevent our networking stack from resetting the connection:
+From there the `RELATED,ESTABLISHED` iptables rule allows us to retrieve the flag, but with the added complication of doing a TLS handshake before sending our HTTPS request. A partial solution script for HTTP only is in [firewalker3.py](firewalker3.py). Similar to firewalker_2, we must add a rule to our own firewall to prevent our networking stack from resetting the connection:
 
 `iptables -A OUTPUT -p tcp --tcp-flags RST RST --dport 27302 -j DROP`
